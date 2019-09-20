@@ -46,7 +46,7 @@ class MultiIsotonicRegressor(BaseEstimator, RegressorMixin):
             indptr.append(indptr[-1]+len(indices[-1]))
         all_comparisons = sparse.csr_matrix((np.ones(indptr[-1], dtype=np.bool), np.concatenate(indices), indptr),
                                             shape=(X.shape[0], X.shape[0]), dtype=np.bool)
-        edges_to_add = zip(*(all_comparisons-all_comparisons.dot(all_comparisons)).nonzero())
+        edges_to_add = list(zip(*(all_comparisons-all_comparisons.dot(all_comparisons)).nonzero()))
         mygraph = igraph.Graph(n=y.size, edges=edges_to_add, directed=True, vertex_attrs={'y': ysort})
 
         def _add_source_sink(graph_part):
